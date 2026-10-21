@@ -72,7 +72,7 @@ export default function About() {
                   <s.icon size={24} />
                   <h4>{s.name}</h4>
                   <p>{s.description}</p>
-                  <strong>{naira(s.price)}{s.type === "perNight" ? " / night" : ""}</strong>
+                  {/* <strong>{naira(s.price)}{s.type === "perNight" ? " / night" : ""}</strong> */}
                 </div>
               </Reveal>
             ))}
