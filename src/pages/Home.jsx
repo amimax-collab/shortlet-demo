@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { BedDouble, ShieldCheck, Wifi, MapPin, Sparkles, CalendarCheck, Wallet, Handshake } from "lucide-react";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/Searchbar";
 import UnitCard from "../components/UnitCard";
 import MapEmbed from "../components/MapEmbed";
 import Reveal from "../components/Reveal";
