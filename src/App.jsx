@@ -14,6 +14,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import './styles/global.css'
 import './styles/app.css'
+import { whatsappLink } from "./utils/whatsapp";
 
 export default function App() {
   const location = useLocation();

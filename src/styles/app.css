@@ -91,11 +91,11 @@
 .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
 .cal-dow { font-size: 11px; color: var(--color-muted); text-align: center; padding-bottom: 4px; }
 .cal-day { aspect-ratio: 1; border: none; background: transparent; border-radius: 8px; font: inherit; font-size: 14px; cursor: pointer; }
-.cal-day:hover:not(:disabled) { background: var(--color-accent-bg); }
+/* .cal-day:hover:not(:disabled) { background: var(--color-accent-bg); } */
 .cal-day:disabled { color: #bbb; cursor: not-allowed; }
 .cal-day.taken { background: #f6dcdc; color: #b04a4a; text-decoration: line-through; }
-.cal-day.in-range { background: var(--color-accent-bg); }
-.cal-day.selected { background: var(--color-primary); color: #fff; text-decoration: none; }
+/* .cal-day.in-range { background: var(--color-accent-bg); } */
+/* .cal-day.selected { background: var(--color-primary); color: #fff; text-decoration: none; } */
 .cal-legend { display: flex; gap: 14px; font-size: 12px; color: var(--color-muted); margin-top: 10px; }
 .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; }
 .dot.free { background: #fff; border: 1px solid var(--color-border); }
@@ -207,7 +207,7 @@ html { scroll-behavior: smooth; }
 .thumbs img { transition: opacity 0.25s ease, transform 0.25s ease; }
 .thumbs img:hover { opacity: 1; transform: translateY(-2px); }
 .cal-day { transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease; }
-.cal-day:hover:not(:disabled) { transform: scale(1.08); }
+/* .cal-day:hover:not(:disabled) { transform: scale(1.08); } */
 
 /* dashboard bars grow in */
 .bar { transform-origin: bottom; animation: grow 0.9s ease both; }
@@ -260,3 +260,39 @@ html { scroll-behavior: smooth; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ---------- calendar: every chosen date in primary color ---------- */
+.cal-day { -webkit-appearance: none; appearance: none; -webkit-tap-highlight-color: transparent; color: var(--color-text); }
+.calendar .cal-day.selected,
+.calendar .cal-day.in-range { background: var(--color-primary); color: #fff; text-decoration: none; }
+
+/* hover effects only on devices that really have a mouse, so phones never get "stuck" hovers */
+@media (hover: hover) {
+  .cal-day:not(:disabled):not(.selected):not(.in-range):hover { background: var(--color-accent-bg); transform: scale(1.08); }
+}
+
+/* ---------- form layout + upload ---------- */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.checkout h3 { margin: 20px 0 12px; }
+.upload-drop { display: flex; align-items: center; gap: 12px; padding: 16px; border: 2px dashed var(--color-border); border-radius: var(--radius-sm); cursor: pointer; color: var(--color-muted); font-size: 14px; transition: border-color 0.2s ease, background 0.2s ease; }
+.upload-drop:hover { border-color: var(--color-primary); background: var(--color-accent-bg); }
+.upload-drop small { display: block; font-size: 12px; }
+.upload-done { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--radius-sm); background: var(--color-accent-bg); color: var(--color-primary); font-size: 14px; }
+.upload-done span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.icon-btn { background: none; border: none; cursor: pointer; color: inherit; display: grid; place-items: center; padding: 4px; }
+
+/* ---------- extra services box ---------- */
+.accordion { border: 1px solid var(--color-border); border-radius: var(--radius-sm); margin-top: 16px; overflow: hidden; }
+.accordion-head { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; background: var(--color-bg); border: none; font: inherit; font-weight: 600; color: var(--color-text); cursor: pointer; }
+.accordion-title { display: flex; align-items: center; gap: 8px; }
+.accordion-title em { font-weight: 400; font-style: normal; color: var(--color-muted); font-size: 13px; }
+.accordion-meta { display: flex; align-items: center; gap: 10px; }
+.accordion-meta svg { transition: transform 0.3s ease; }
+.accordion-meta svg.rotated { transform: rotate(180deg); }
+.pill { background: var(--color-primary); color: #fff; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+.accordion-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s ease; }
+.accordion-body.open { grid-template-rows: 1fr; }
+.accordion-inner { overflow: hidden; }
+.accordion-inner .service-list { padding: 14px; }
+
+@media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
