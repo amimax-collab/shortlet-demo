@@ -35,7 +35,7 @@
 /* ---------- hero + search ---------- */
 .hero {
   background: linear-gradient(90deg, rgba(20,20,18,0.78), rgba(20,20,18,0.25)),
-    url("C:\Users\FONT\Desktop\shortlet\public\images\hero.jpg") center / cover;
+    url("/public/images/hero.jpg") center / cover;
   color: #fff; padding: 90px 0 120px;
 }
 .hero small { letter-spacing: 3px; font-size: 12px; }
