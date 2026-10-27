@@ -2,6 +2,8 @@ import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import MapEmbed from "../components/MapEmbed.jsx";
 import { property } from "../data/property.js";
+import { FaWhatsapp } from "react-icons/fa";
+import { whatsappLink } from "../utils/whatsapp";
 
 export default function Contact() {
   const [sent, setSent] = useState(false);
@@ -14,8 +16,8 @@ export default function Contact() {
           <p className="contact-line"><MapPin size={18} /> {property.address}</p>
           <p className="contact-line"><Phone size={18} /> {property.phone}</p>
           <p className="contact-line"><Mail size={18} /> {property.email}</p>
-          <a className="btn" href={`https://wa.me/${property.whatsapp}`} target="_blank" rel="noreferrer">
-            <MessageCircle size={18} /> Chat on WhatsApp
+          <a className="btn" href={whatsappLink(`Hello ${property.name}, I'd like to make an enquiry.`)} target="_blank" rel="noreferrer">
+            <FaWhatsapp size={18} /> Chat on WhatsApp
           </a>
 
           {sent ? (

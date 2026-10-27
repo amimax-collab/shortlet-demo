@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { MessageCircle } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
@@ -15,6 +15,8 @@ import Contact from "./pages/Contact";
 import './styles/global.css'
 import './styles/app.css'
 import { whatsappLink } from "./utils/whatsapp";
+import Login from "./pages/Login";
+import RequireAuth from "./components/RequireAuth";
 
 export default function App() {
   const location = useLocation();
@@ -30,14 +32,19 @@ export default function App() {
           <Route path="/apartments/:id" element={<UnitDetails />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/confirmation" element={<Confirmation />} />
-          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/login" element={<Login />} />
+          <Route path="/admin" element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
       <Footer />
-      <a className="whatsapp-fab" href={`https://wa.me/${property.whatsapp}`} target="_blank" rel="noreferrer" aria-label="WhatsApp">
-        <MessageCircle size={26} />
+      <a
+          className="whatsapp-fab"
+          href={whatsappLink(`Hello ${property.name}! I'd like to ask about booking an apartment.`)}
+          target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp"
+        >
+          <FaWhatsapp size={30} />
       </a>
     </>
   );

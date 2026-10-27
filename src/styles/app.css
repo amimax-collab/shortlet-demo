@@ -35,7 +35,7 @@
 /* ---------- hero + search ---------- */
 .hero {
   background: linear-gradient(90deg, rgba(20,20,18,0.78), rgba(20,20,18,0.25)),
-    url("https://picsum.photos/seed/haven-hero/1600/700") center / cover;
+    url("C:\Users\FONT\Desktop\shortlet\public\images\hero.jpg") center / cover;
   color: #fff; padding: 90px 0 120px;
 }
 .hero small { letter-spacing: 3px; font-size: 12px; }
@@ -296,3 +296,6 @@ html { scroll-behavior: smooth; }
 .accordion-inner .service-list { padding: 14px; }
 
 @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+.guest-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px 20px; padding: 6px 0; white-space: normal; }
+.guest-details span { display: block; font-size: 12px; color: var(--color-muted); }

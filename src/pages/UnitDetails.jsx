@@ -6,6 +6,8 @@ import { units } from "../data/units.js";
 import { property } from "../data/property.js";
 import { calcTotal, getBookings, isRangeAvailable } from "../utils/booking.js";
 import { formatDate, naira, nightsBetween } from "../utils/dates.js";
+import { FaWhatsapp } from "react-icons/fa";
+import { whatsappLink } from "../utils/whatsapp";
 
 export default function UnitDetails() {
   const { id } = useParams();
@@ -32,6 +34,10 @@ export default function UnitDetails() {
   const nights = checkIn && checkOut ? nightsBetween(checkIn, checkOut) : 0;
   const valid = nights > 0 && isRangeAvailable(unit.id, checkIn, checkOut, bookings);
   const price = calcTotal(unit, nights);
+
+  // const askMessage = valid
+  // ? `Hello ${property.name}, I'm interested in the ${unit.name} from ${formatDate(checkIn)} to ${formatDate(checkOut)} for ${g} guest${g > 1 ? "s" : ""}. Is it available?`
+  // : `Hello ${property.name}, I'd like to know more about the ${unit.name}.`;
 
   function handleDates(a, b) {
     setCheckIn(a);
@@ -105,6 +111,9 @@ export default function UnitDetails() {
           <button className="btn" style={{ width: "100%", marginTop: 14 }} disabled={!valid} onClick={reserve}>
             Reserve now
           </button>
+          {/* <a className="btn btn-outline" style={{ width: "100%", marginTop: 10 }} href={whatsappLink(askMessage)} target="_blank" rel="noreferrer">
+            <FaWhatsapp size={18} /> Ask about this apartment
+          </a> */}
         </aside>
       </div>
     </div>

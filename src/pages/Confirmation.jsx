@@ -1,15 +1,21 @@
-import { CircleCheck, MapPin, MessageCircle } from "lucide-react";
+import { CircleCheck, MapPin } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import { units } from "../data/units.js";
 import { property } from "../data/property.js";
 import { getBookings } from "../utils/booking.js";
 import { formatDate, naira } from "../utils/dates.js";
 import { services } from "../data/services";
+import { FaWhatsapp } from "react-icons/fa";
+import { whatsappLink } from "../utils/whatsapp";
 
 export default function Confirmation() {
   const [params] = useSearchParams();
   const booking = getBookings().find((b) => b.id === params.get("ref"));
   const unit = booking && units.find((u) => u.id === booking.unitId);
+  const message =
+  `Hello ${property.name}, this is ${booking.guest}. I just booked the ${unit.name} ` +
+  `(ref ${booking.id}) from ${formatDate(booking.checkIn)} to ${formatDate(booking.checkOut)} ` +
+  `for ${booking.guests} guest${booking.guests > 1 ? "s" : ""}. I have a question about my booking.`;
   const extras = services.filter((s) => booking?.services?.includes(s.id));
 
   if (!booking || !unit) {
@@ -44,8 +50,8 @@ export default function Confirmation() {
           <a className="btn" href={property.directionsUrl} target="_blank" rel="noreferrer">
             <MapPin size={18} /> Get directions
           </a>
-          <a className="btn btn-outline" href={`https://wa.me/${property.whatsapp}`} target="_blank" rel="noreferrer">
-            <MessageCircle size={18} /> WhatsApp us
+          <a className="btn btn-outline" href={whatsappLink(message)} target="_blank" rel="noreferrer">
+            <FaWhatsapp size={18} /> WhatsApp us
           </a>
         </div>
       </div>

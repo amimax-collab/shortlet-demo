@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { units } from "../data/units.js";
 import {
   addBooking, getBookings, isNightTaken, removeBooking, resetBookings, updateStatus,
 } from "../utils/booking.js";
 import { addDays, formatDate, naira, toISO } from "../utils/dates.js";
+import { useNavigate } from "react-router-dom";
+import { services } from "../data/services";
+import { logout } from "../utils/auth";
 
 const weeklyVisits = [
   { label: "Mon", value: 120 }, { label: "Tue", value: 180 }, { label: "Wed", value: 150 },
@@ -33,6 +36,11 @@ export default function Dashboard() {
   const [blockError, setBlockError] = useState("");
   const [weekly, setWeekly] = useState(true);
   const [alerts, setAlerts] = useState(true);
+
+  const navigate = useNavigate();
+  const [openId, setOpenId] = useState(null);
+  const serviceNames = (b) =>
+  (b.services || []).map((id) => services.find((s) => s.id === id)?.name).filter(Boolean).join(", ") || "None";
 
   const refresh = () => setBookings(getBookings());
   const today = toISO(new Date());
@@ -88,10 +96,13 @@ export default function Dashboard() {
 
   return (
     <div className="container page">
-      <div className="section-head">
-        <h1 style={{ margin: 0 }}>Owner dashboard</h1>
+    <div className="section-head">
+      <h1 style={{ margin: 0 }}>Owner dashboard</h1>
+      <div style={{ display: "flex", gap: 8 }}>
         <button className="btn btn-outline btn-sm" onClick={() => { resetBookings(); refresh(); }}>Reset demo data</button>
+        <button className="btn btn-sm" onClick={() => { logout(); navigate("/admin/login"); }}>Log out</button>
       </div>
+    </div>
 
       <div className="stats">
         <div className="card stat"><span className="muted">Total revenue</span><div className="num">{naira(revenue)}</div></div>
@@ -142,19 +153,41 @@ export default function Dashboard() {
             </thead>
             <tbody>
               {sorted.map((b) => (
-                <tr key={b.id}>
-                  <td>{b.id}</td>
-                  <td>{b.guest}</td>
-                  <td>{unitName(b.unitId)}</td>
-                  <td>{formatDate(b.checkIn)} → {formatDate(b.checkOut)}</td>
-                  <td>{b.total ? naira(b.total) : "-"}</td>
-                  <td><span className={`badge badge-${b.status.toLowerCase()}`}>{b.status}</span></td>
-                  <td>
-                    {b.status === "Pending" && <button className="btn btn-sm" onClick={() => { updateStatus(b.id, "Paid"); refresh(); }}>Confirm</button>}{" "}
-                    {(b.status === "Paid" || b.status === "Pending") && <button className="btn btn-outline btn-sm" onClick={() => { updateStatus(b.id, "Cancelled"); refresh(); }}>Cancel</button>}
-                    {b.status === "Blocked" && <button className="btn btn-outline btn-sm" onClick={() => { removeBooking(b.id); refresh(); }}>Unblock</button>}
-                  </td>
-                </tr>
+                <Fragment key={b.id}>
+                  <tr>
+                    <td>{b.id}</td>
+                    <td>{b.guest}</td>
+                    <td>{unitName(b.unitId)}</td>
+                    <td>{formatDate(b.checkIn)} → {formatDate(b.checkOut)}</td>
+                    <td>{b.total ? naira(b.total) : "-"}</td>
+                    <td><span className={`badge badge-${b.status.toLowerCase()}`}>{b.status}</span></td>
+                    <td>
+                      {b.status === "Pending" && <button className="btn btn-sm" onClick={() => { updateStatus(b.id, "Paid"); refresh(); }}>Confirm</button>}{" "}
+                      {(b.status === "Paid" || b.status === "Pending") && <button className="btn btn-outline btn-sm" onClick={() => { updateStatus(b.id, "Cancelled"); refresh(); }}>Cancel</button>}
+                      {b.status === "Blocked" && <button className="btn btn-outline btn-sm" onClick={() => { removeBooking(b.id); refresh(); }}>Unblock</button>}{" "}
+                      {b.status !== "Blocked" && (
+                        <button className="btn btn-outline btn-sm" onClick={() => setOpenId(openId === b.id ? null : b.id)}>
+                          {openId === b.id ? "Hide" : "Details"}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                  {openId === b.id && (
+                    <tr>
+                      <td colSpan={7}>
+                        <div className="guest-details">
+                          <div><span>Email</span>{b.email || "-"}</div>
+                          <div><span>Phone</span>{b.phone || "-"}</div>
+                          <div><span>Address</span>{b.address || "-"}</div>
+                          <div><span>ID</span>{b.idType ? `${b.idType} · ${b.idNumber}` : "-"}</div>
+                          <div><span>ID file</span>{b.idFileName || "-"}</div>
+                          <div><span>Extra services</span>{serviceNames(b)}</div>
+                          <div><span>Notes</span>{b.notes || "-"}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               ))}
             </tbody>
           </table>
